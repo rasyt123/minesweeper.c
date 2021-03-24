@@ -127,7 +127,7 @@ void RevealAllTiles(minefield* minesboard, minefield* topboard, int* playerrow, 
        exit(0);
    }
    else if (minesboard->board[*playerrow][*playercol] == '-') {
-       RevealTilesBlank(minesboard, topboard, *playerrow, *playercol, 9, 9);
+       RevealTilesBlank(minesboard, topboard, *playerrow, *playercol, minesboard->num_cols, minesboard->num_rows);
        RevealTiles(minesboard, topboard, *playerrow, *playercol);
    }
    else {
@@ -384,6 +384,7 @@ void InitializeMines(minefield* minesboard, minepoint *minelocations)
 
 void printfield(minefield* topboard) 
 {
+    char colorcode;
     putchar('\n');
     printf("  ");
     for (int columns = 0; columns < topboard->num_cols; columns++) {
@@ -406,39 +407,46 @@ void printfield(minefield* topboard)
             printf("%-2d", i);
         }
         for (int columns = 0; columns < topboard->num_cols; columns++) {
+          colorcode = topboard->board[rows][columns];
           if(topboard->num_cols >= 10) {
-                if (topboard->board[rows][columns] == '1') {
+              switch (colorcode) {
+                  case '1':
                     blue();
-                }
-                else if (topboard->board[rows][columns] == '2') {
+                    break;
+                  case '2':
                     green();
-                }
-                else if (topboard->board[rows][columns] == '3') {
+                    break;
+                  case '3':
                     red();
-                }
-                else if (topboard->board[rows][columns] == '4') {
+                    break;
+                  case '4':
                     purple();
-                }
-                else {
+                    break;
+                  default:
                     red();
-                }
+              }
             printf("%-3c", topboard->board[rows][columns]);
-            } else {
+            } 
+            else {
              if (topboard->board[rows][columns] == '1') {
                     blue();
                 }
-                else if (topboard->board[rows][columns] == '2') {
+                switch (colorcode) {
+                  case '1':
+                    blue();
+                    break;
+                  case '2':
                     green();
-                }
-                else if (topboard->board[rows][columns] == '3') {
+                    break;
+                  case '3':
                     red();
-                }
-                else if (topboard->board[rows][columns] == '4') {
+                    break;
+                  case '4':
                     purple();
-                }
-                else {
+                    break;
+                  default:
                     red();
-                }
+              }
             printf("%-2c", topboard->board[rows][columns]);
             }
         }
@@ -523,3 +531,4 @@ bool my_isspace(char c)
 {
 	return c == ' ' || c == '\n' || c == '\t';
 }
+
